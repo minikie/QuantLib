@@ -106,7 +106,8 @@ namespace QuantLib {
         Schedule after(const Date& truncationDate) const;
         Schedule until(const Date& truncationDate) const;
         //@}
-      private:
+      //private:
+      protected:
         boost::optional<Period> tenor_;
         Calendar calendar_;
         BusinessDayConvention convention_;

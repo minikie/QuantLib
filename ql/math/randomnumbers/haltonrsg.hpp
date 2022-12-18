@@ -52,7 +52,7 @@ namespace QuantLib {
             return sequence_;
         }
         Size dimension() const {return dimensionality_;}
-      private:
+      protected:
         Size dimensionality_;
         mutable unsigned long sequenceCounter_ = 0;
         mutable sample_type sequence_;

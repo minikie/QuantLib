@@ -62,7 +62,7 @@ namespace QuantLib {
         }
         const sample_type& lastSequence() const { return sequence_; }
         Size dimension() const { return dimensionality_; }
-      private:
+      protected:
         void generateNextIntSequence() const;
         Size dimensionality_;
         // mutable unsigned long sequenceCounter_;

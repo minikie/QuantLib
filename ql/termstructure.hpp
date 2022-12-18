@@ -104,7 +104,7 @@ namespace QuantLib {
         bool moving_ = false;
         mutable bool updated_ = true;
         Calendar calendar_;
-      private:
+      // private: 상속을 위해 수정함
         mutable Date referenceDate_;
         Natural settlementDays_;
         DayCounter dayCounter_;

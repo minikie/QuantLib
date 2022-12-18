@@ -131,7 +131,7 @@ namespace QuantLib {
         }
         const sample_type& lastSequence() const { return sequence_; }
         Size dimension() const { return dimensionality_; }
-      private:
+      protected:
         static const int bits_;
         static const double normalizationFactor_;
         Size dimensionality_;

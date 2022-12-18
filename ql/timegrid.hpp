@@ -33,6 +33,8 @@
 #include <numeric>
 #include <cmath>
 
+#include <ql/time/date.hpp> // 추가됨 ( downcasting 이 불가능 )
+
 namespace QuantLib {
 
     //! time grid class
@@ -170,10 +172,50 @@ namespace QuantLib {
         Time front() const { return times_.front(); }
         Time back() const { return times_.back(); }
         //@}
-      private:
+      //private:
+      protected:
         std::vector<Time> times_;
         std::vector<Time> dt_;
         std::vector<Time> mandatoryTimes_;
+
+
+
+        // -----------------------------------------------------------------------------------------------------------------
+        // 추가됨 ( downcasting 이 불가능 ) --------------------------------------------------------------------------------
+      public:
+
+		template <class Iterator>
+        TimeGrid(Iterator begin, Iterator end, const std::vector<Date>& dates)
+        : mandatoryTimes_(begin, end), dates_(dates) {
+            std::sort(mandatoryTimes_.begin(), mandatoryTimes_.end());
+            // We seem to assume that the grid begins at 0.
+            // Let's enforce the assumption for the time being
+            // (even though I'm not sure that I agree.)
+            QL_REQUIRE(mandatoryTimes_.front() >= 0.0, "negative times not allowed");
+            std::vector<Time>::iterator e = std::unique(
+                mandatoryTimes_.begin(), mandatoryTimes_.end(), std::ptr_fun(close_enough));
+            mandatoryTimes_.resize(e - mandatoryTimes_.begin());
+
+            if (mandatoryTimes_[0] > 0.0)
+                times_.push_back(0.0);
+
+            times_.insert(times_.end(), mandatoryTimes_.begin(), mandatoryTimes_.end());
+
+            std::adjacent_difference(times_.begin() + 1, times_.end(), std::back_inserter(dt_));
+        }
+
+        //! returns the index i such that grid[i] is closest to t
+        Size closestIndex(Time t, int order) const; // -1 : before, 0 : closest, 1 : after
+        Size closestIndex_Date(const Date& d) const;
+
+        const std::vector<Time>& dts() const { return dt_; }
+        const std::vector<Date>& dates() const { return dates_; }
+        Date date_at(Size i) const { return dates_.at(i); }
+
+      protected:
+
+        std::vector<Date> dates_;
+
     };
 
 }
