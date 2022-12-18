@@ -94,5 +94,47 @@ namespace QuantLib {
         }
     }
 
+   Size TimeGrid::closestIndex(Time t, int order) const {
+        const_iterator begin = times_.begin(), end = times_.end();
+        const_iterator result = std::lower_bound(begin, end, t);
+        if (result == begin) {
+            return 0;
+        } else if (result == end) {
+            return size() - 1;
+        } else {
+            if (order == -1)
+                return (result - begin) - 1;
+            else if (order == 1)
+                return (result - begin);
+            else {
+                // |-----t-----|
+                Time dt1 = *result - t;
+                Time dt2 = t - *(result - 1);
+                if (dt1 < dt2)
+                    return result - begin;
+                else
+                    return (result - begin) - 1;
+            }
+        }
+    }
+
+
+    Size TimeGrid::closestIndex_Date(const Date& d) const {
+        std::vector<Date>::const_iterator begin = dates_.begin(), end = dates_.end();
+        std::vector<Date>::const_iterator result = std::lower_bound(begin, end, d);
+        if (result == begin) {
+            return 0;
+        } else if (result == end) {
+            return size() - 1;
+        } else {
+            Time dt1 = *result - d;
+            Time dt2 = d - *(result - 1);
+            if (dt1 < dt2)
+                return result - begin;
+            else
+                return (result - begin) - 1;
+        }
+    }
+
 }
 

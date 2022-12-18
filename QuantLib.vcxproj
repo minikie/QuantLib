@@ -135,7 +135,10 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release (static runtime)|x64'">QuantLib-x64-mt-s</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">QuantLib-mt</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">QuantLib-x64-mt</TargetName>
-  </PropertyGroup>  
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(BOOSTDIR)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
@@ -211,6 +214,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <CombineFilesOnlyFromTheSameFolder>true</CombineFilesOnlyFromTheSameFolder>
       <IncludeInUnityFile>true</IncludeInUnityFile>
+      <DisableSpecificWarnings>4819;4996;</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -1043,7 +1047,7 @@
     <ClInclude Include="ql\math\interpolations\backwardflatlinearinterpolation.hpp" />
     <ClInclude Include="ql\math\interpolations\bicubicsplineinterpolation.hpp" />
     <ClInclude Include="ql\math\interpolations\bilinearinterpolation.hpp" />
-    <ClInclude Include="ql\math\interpolations\chebyshevinterpolation.hpp" />    
+    <ClInclude Include="ql\math\interpolations\chebyshevinterpolation.hpp" />
     <ClInclude Include="ql\math\interpolations\convexmonotoneinterpolation.hpp" />
     <ClInclude Include="ql\math\interpolations\cubicinterpolation.hpp" />
     <ClInclude Include="ql\math\interpolations\extrapolation.hpp" />
@@ -2266,7 +2270,7 @@
     <ClCompile Include="ql\math\integrals\integral.cpp" />
     <ClCompile Include="ql\math\integrals\kronrodintegral.cpp" />
     <ClCompile Include="ql\math\integrals\segmentintegral.cpp" />
-    <ClCompile Include="ql\math\interpolations\chebyshevinterpolation.cpp" />    
+    <ClCompile Include="ql\math\interpolations\chebyshevinterpolation.cpp" />
     <ClCompile Include="ql\math\matrix.cpp" />
     <ClCompile Include="ql\math\matrixutilities\basisincompleteordered.cpp" />
     <ClCompile Include="ql\math\matrixutilities\bicgstab.cpp" />

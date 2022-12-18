@@ -46,6 +46,7 @@ namespace QuantLib {
         typedef Sample<Real> sample_type;
         typedef RNG urng_type;
         explicit CLGaussianRng(const RNG& uniformGenerator);
+        explicit CLGaussianRng(unsigned long seed);  //  Ãß°¡µÊ
         //! returns a sample from a Gaussian distribution
         sample_type next() const;
       private:
@@ -55,6 +56,11 @@ namespace QuantLib {
     template <class RNG>
     CLGaussianRng<RNG>::CLGaussianRng(const RNG& uniformGenerator)
     : uniformGenerator_(uniformGenerator) {}
+
+    // Ãß°¡µÊ
+    template <class RNG>
+    CLGaussianRng<RNG>::CLGaussianRng(unsigned long seed)
+    : uniformGenerator_(RNG(seed)) {}
 
     template <class RNG>
     inline typename CLGaussianRng<RNG>::sample_type
