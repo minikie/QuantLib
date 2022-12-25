@@ -178,8 +178,6 @@ namespace QuantLib {
         std::vector<Time> dt_;
         std::vector<Time> mandatoryTimes_;
 
-
-
         // -----------------------------------------------------------------------------------------------------------------
         // 추가됨 ( downcasting 이 불가능 ) --------------------------------------------------------------------------------
       public:
@@ -207,17 +205,15 @@ namespace QuantLib {
         //! returns the index i such that grid[i] is closest to t
         Size closestIndex(Time t, int order) const; // -1 : before, 0 : closest, 1 : after
         Size closestIndex_Date(const Date& d) const;
-
-        const std::vector<Time>& dts() const { return dt_; }
-        const std::vector<Date>& dates() const { return dates_; }
         Date date_at(Size i) const { return dates_.at(i); }
 
+        const std::vector<Time>& times() const { return dt_; }
+        const std::vector<Time>& dts() const { return dt_; }
+        const std::vector<Date>& dates() const { return dates_; }
+
       protected:
-
         std::vector<Date> dates_;
-
     };
-
 }
 
 
