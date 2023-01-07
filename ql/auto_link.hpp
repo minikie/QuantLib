@@ -24,6 +24,33 @@
 #include <ql/version.hpp>
 #include <boost/config.hpp>
 
+// select toolset:
+#if (_MSC_VER < 1310)
+#    error "unsupported Microsoft compiler"
+#elif (_MSC_VER == 1310)
+#    define QL_LIB_TOOLSET "vc71"
+#elif (_MSC_VER == 1400)
+#    define QL_LIB_TOOLSET "vc80"
+#elif (_MSC_VER == 1500)
+#    define QL_LIB_TOOLSET "vc90"
+#elif (_MSC_VER == 1600)
+#    define QL_LIB_TOOLSET "vc100"
+#elif (_MSC_VER == 1700)
+#    define QL_LIB_TOOLSET "vc110"
+#elif (_MSC_VER == 1800)
+#    define QL_LIB_TOOLSET "vc120"
+#elif (_MSC_VER == 1900)
+#    define QL_LIB_TOOLSET "vc140"
+#elif (_MSC_VER < 1920)
+#    define QL_LIB_TOOLSET "vc141"
+#elif (_MSC_VER < 1930)
+#    define QL_LIB_TOOLSET "vc142"
+#elif (_MSC_VER < 1940)
+#    define QL_LIB_TOOLSET "vc143"
+#else
+#    define QL_LIB_TOOLSET "vc-unknown"
+#endif
+
 #ifdef _M_X64
 #  define QL_LIB_PLATFORM "-x64"
 #else
@@ -54,7 +81,8 @@
 #  endif
 #endif
 
-#define QL_LIB_NAME "QuantLib" QL_LIB_PLATFORM QL_LIB_THREAD_OPT QL_LIB_RT_OPT ".lib"
+#define QL_LIB_NAME "QuantLib-" QL_LIB_TOOLSET QL_LIB_PLATFORM QL_LIB_THREAD_OPT QL_LIB_RT_OPT ".lib"
+// #define QL_LIB_NAME "QuantLib" QL_LIB_PLATFORM QL_LIB_THREAD_OPT QL_LIB_RT_OPT ".lib"
 
 #pragma comment(lib, QL_LIB_NAME)
 #ifdef BOOST_LIB_DIAGNOSTIC
