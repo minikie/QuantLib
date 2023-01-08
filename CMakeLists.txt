@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15.0)
 
 project(QuantLib)
 
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/quantlib.cmake)
+# include(${CMAKE_CURRENT_LIST_DIR}/cmake/quantlib.cmake)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ${UNIX})
 option(USE_BOOST_DYNAMIC_LIBRARIES "Use the shared version of Boost libraries" ${UNIX})
