@@ -8,6 +8,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ../../lib)
 message( STATUS "Host Architecture: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 message( STATUS "Build Architecture: ${CMAKE_OSX_ARCHITECTURES}")
 message( STATUS "System Name: ${CMAKE_SYSTEM_NAME}")
+message( STATUS "QL_OUTPUT_NAME : ${QL_OUTPUT_NAME}")
 
 if(WIN32)
     if (${BUILD_SHARED_LIBS})
