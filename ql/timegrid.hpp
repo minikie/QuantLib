@@ -27,13 +27,13 @@
 
 #include <ql/errors.hpp>
 #include <ql/math/comparison.hpp>
-#include <vector>
+#include <ql/time/date.hpp> // 추가됨 ( downcasting 이 불가능 )
 #include <algorithm>
+#include <cmath>
 #include <iterator>
 #include <numeric>
-#include <cmath>
-
-#include <ql/time/date.hpp> // 추가됨 ( downcasting 이 불가능 )
+#include <utility>
+#include <vector>
 
 namespace QuantLib {
 
@@ -181,17 +181,16 @@ namespace QuantLib {
         // -----------------------------------------------------------------------------------------------------------------
         // 추가됨 ( downcasting 이 불가능 ) --------------------------------------------------------------------------------
       public:
-
-		template <class Iterator>
-        TimeGrid(Iterator begin, Iterator end, const std::vector<Date>& dates)
-        : mandatoryTimes_(begin, end), dates_(dates) {
+        template <class Iterator>
+        TimeGrid(Iterator begin, Iterator end, std::vector<Date> dates)
+        : mandatoryTimes_(begin, end), dates_(std::move(dates)) {
             std::sort(mandatoryTimes_.begin(), mandatoryTimes_.end());
             // We seem to assume that the grid begins at 0.
             // Let's enforce the assumption for the time being
             // (even though I'm not sure that I agree.)
             QL_REQUIRE(mandatoryTimes_.front() >= 0.0, "negative times not allowed");
-            std::vector<Time>::iterator e = std::unique(
-                mandatoryTimes_.begin(), mandatoryTimes_.end(), std::ptr_fun(close_enough));
+            auto e = std::unique(mandatoryTimes_.begin(), mandatoryTimes_.end(),
+                                 std::ptr_fun(close_enough));
             mandatoryTimes_.resize(e - mandatoryTimes_.begin());
 
             if (mandatoryTimes_[0] > 0.0)
