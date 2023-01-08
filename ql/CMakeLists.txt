@@ -1,4 +1,5 @@
-get_quantlib_library_name(QL_OUTPUT_NAME)
+# get_quantlib_library_name(QL_OUTPUT_NAME)
+set(QL_OUTPUT_NAME, "QuantLib")
 
 file(GLOB_RECURSE QUANTLIB_FILES "*.hpp" "*.cpp")
 
