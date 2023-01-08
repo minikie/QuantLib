@@ -17,11 +17,11 @@ if(WIN32)
     add_library(${QL_OUTPUT_NAME} ${QUANTLIB_FILES})
     set_property(TARGET ${QL_OUTPUT_NAME} PROPERTY PROJECT_LABEL "QuantLib")
 elseif( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    set (CMAKE_CXX_STANDARD 11)
+    set (CMAKE_CXX_STANDARD 14)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations -Wno-pragma-messages -Wno-user-defined-warnings")
     add_library(${QL_OUTPUT_NAME} STATIC ${QUANTLIB_FILES})
 else() # for osx
-    set (CMAKE_CXX_STANDARD 11)
+    set (CMAKE_CXX_STANDARD 14)
     set (CMAKE_OSX_DEPLOYMENT_TARGET 11.0)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations -Wno-#pragma-messages -Wno-user-defined-warnings")
 
