@@ -48,8 +48,6 @@ endif()
 message(STATUS "QuantLib library name: ${${QL_OUTPUT_NAME}}[${CMAKE_DEBUG_POSTFIX}]")
 endmacro(get_quantlib_library_name)
 
-
-
 get_quantlib_library_name(QL_OUTPUT_NAME)
 # set(QL_OUTPUT_NAME, QuantLib)
 
