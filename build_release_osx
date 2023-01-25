@@ -1,2 +1,2 @@
-./build_release_osx_arm
-./build_release_osx_x86
+chmod +x ./build_release_osx_arm && ./build_release_osx_arm
+chmod +x ./build_release_osx_x86 && ./build_release_osx_x86
