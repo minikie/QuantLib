@@ -7,8 +7,12 @@ if(MSVC)
     
     # - toolset
     # ...taken from FindBoost.cmake
-    if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.10)
-        set(QL_LIB_TOOLSET "-vc141")
+    if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.30)
+        set(QL_LIB_TOOLSET "-vc143")
+    elseif(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.20)
+        set(QL_LIB_TOOLSET "-vc142")        
+    elseif(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.10)
+        set(QL_LIB_TOOLSET "-vc141")        
     elseif(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19)
         set(QL_LIB_TOOLSET "-vc140")
     elseif(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 18)
