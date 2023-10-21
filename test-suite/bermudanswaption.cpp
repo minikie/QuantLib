@@ -59,9 +59,6 @@ namespace bermudan_swaption_test {
 
         RelinkableHandle<YieldTermStructure> termStructure;
 
-        // cleanup
-        SavedSettings backup;
-
         // setup
         CommonVars() {
             startYears = 1;
@@ -266,6 +263,7 @@ void BermudanSwaptionTest::testCachedG2Values() {
         for (const auto& i : swap->fixedLeg()) {
             exerciseDates.push_back(ext::dynamic_pointer_cast<Coupon>(i)->accrualStartDate());
         }
+
         swaptions.push_back(ext::make_shared<Swaption>(swap,
             ext::make_shared<BermudanExercise>(exerciseDates)));
     }
@@ -318,7 +316,6 @@ void BermudanSwaptionTest::testTreeEngineTimeSnapping() {
     BOOST_TEST_MESSAGE("Testing snap of exercise dates for discretized swaption...");
 
     Date today = Date(8, Jul, 2021);
-    SavedSettings backup;
     Settings::instance().evaluationDate() = today;
 
     RelinkableHandle<YieldTermStructure> termStructure;
@@ -347,6 +344,7 @@ void BermudanSwaptionTest::testTreeEngineTimeSnapping() {
 
         auto callDate = initialCallDate + i * Days;
         if (calendar.isBusinessDay(callDate)) {
+
             auto bermudanSwaption = makeBermudanSwaption(callDate);
 
             auto model = ext::make_shared<HullWhite>(termStructure);
@@ -381,7 +379,7 @@ test_suite* BermudanSwaptionTest::suite(SpeedLevel speed) {
     suite->add(QUANTLIB_TEST_CASE(&BermudanSwaptionTest::testCachedValues));
     suite->add(QUANTLIB_TEST_CASE(&BermudanSwaptionTest::testTreeEngineTimeSnapping));
 
-    if (speed == Slow) {
+    if (speed <= Fast) {
         suite->add(QUANTLIB_TEST_CASE(&BermudanSwaptionTest::testCachedG2Values));
     }
 

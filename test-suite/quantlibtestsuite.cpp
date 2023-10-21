@@ -36,12 +36,9 @@
 #  include <ql/auto_link.hpp>
 #endif
 
-#include "utilities.hpp"
-#include "speedlevel.hpp"
-
 #include "americanoption.hpp"
-#include "andreasenhugevolatilityinterpl.hpp"
 #include "amortizingbond.hpp"
+#include "andreasenhugevolatilityinterpl.hpp"
 #include "array.hpp"
 #include "asianoptions.hpp"
 #include "assetswap.hpp"
@@ -55,8 +52,8 @@
 #include "binaryoption.hpp"
 #include "blackdeltacalculator.hpp"
 #include "blackformula.hpp"
-#include "bonds.hpp"
 #include "bondforward.hpp"
+#include "bonds.hpp"
 #include "brownianbridge.hpp"
 #include "businessdayconventions.hpp"
 #include "calendars.hpp"
@@ -70,6 +67,7 @@
 #include "chooseroption.hpp"
 #include "cliquetoption.hpp"
 #include "cms.hpp"
+#include "cms_normal.hpp"
 #include "cmsspread.hpp"
 #include "commodityunitofmeasure.hpp"
 #include "compiledboostversion.hpp"
@@ -90,23 +88,26 @@
 #include "dividendoption.hpp"
 #include "doublebarrieroption.hpp"
 #include "doublebinaryoption.hpp"
+#include "equitycashflow.hpp"
+#include "equityindex.hpp"
+#include "equitytotalreturnswap.hpp"
 #include "europeanoption.hpp"
 #include "everestoption.hpp"
 #include "exchangerate.hpp"
 #include "extendedtrees.hpp"
 #include "extensibleoptions.hpp"
 #include "fastfouriertransform.hpp"
-#include "fdheston.hpp"
-#include "fdcir.hpp"
-#include "fdmlinearop.hpp"
 #include "fdcev.hpp"
+#include "fdcir.hpp"
+#include "fdheston.hpp"
+#include "fdmlinearop.hpp"
 #include "fdsabr.hpp"
 #include "fittedbonddiscountcurve.hpp"
 #include "forwardoption.hpp"
 #include "forwardrateagreement.hpp"
 #include "functions.hpp"
-#include "gaussianquadratures.hpp"
 #include "garch.hpp"
+#include "gaussianquadratures.hpp"
 #include "gjrgarchmodel.hpp"
 #include "gsr.hpp"
 #include "hestonmodel.hpp"
@@ -134,11 +135,11 @@
 #include "lowdiscrepancysequences.hpp"
 #include "margrabeoption.hpp"
 #include "marketmodel.hpp"
+#include "marketmodel_cms.hpp"
+#include "marketmodel_smm.hpp"
 #include "marketmodel_smmcapletalphacalibration.hpp"
 #include "marketmodel_smmcapletcalibration.hpp"
 #include "marketmodel_smmcaplethomocalibration.hpp"
-#include "marketmodel_smm.hpp"
-#include "marketmodel_cms.hpp"
 #include "markovfunctional.hpp"
 #include "matrices.hpp"
 #include "mclongstaffschwartzengine.hpp"
@@ -175,9 +176,9 @@
 #include "shortratemodels.hpp"
 #include "sofrfutures.hpp"
 #include "solvers.hpp"
+#include "speedlevel.hpp"
 #include "spreadoption.hpp"
 #include "squarerootclvmodel.hpp"
-#include "swingoption.hpp"
 #include "stats.hpp"
 #include "subperiodcoupons.hpp"
 #include "svivolatility.hpp"
@@ -186,6 +187,7 @@
 #include "swaption.hpp"
 #include "swaptionvolatilitycube.hpp"
 #include "swaptionvolatilitymatrix.hpp"
+#include "swingoption.hpp"
 #include "termstructures.hpp"
 #include "timegrid.hpp"
 #include "timeseries.hpp"
@@ -195,17 +197,18 @@
 #include "twoassetbarrieroption.hpp"
 #include "twoassetcorrelationoption.hpp"
 #include "ultimateforwardtermstructure.hpp"
+#include "utilities.hpp"
 #include "variancegamma.hpp"
 #include "varianceoption.hpp"
 #include "varianceswaps.hpp"
 #include "volatilitymodels.hpp"
 #include "vpp.hpp"
+#include "xoshiro256starstar.hpp"
 #include "zabr.hpp"
 #include "zerocouponswap.hpp"
-
-#include <iostream>
-#include <iomanip>
 #include <chrono>
+#include <iomanip>
+#include <iostream>
 
 using namespace boost::unit_test_framework;
 
@@ -244,7 +247,7 @@ namespace {
         */
 
         // QuantLib::Settings::instance().includeReferenceDateCashFlows() = true;
-        // QuantLib::Settings::instance().includeTodaysCashFlows() = boost::none;
+        // QuantLib::Settings::instance().includeTodaysCashFlows() = ext::nullopt;
 
         QuantLib::Settings::instance().evaluationDate() = evaluationDate;
     }
@@ -328,10 +331,11 @@ test_suite* init_unit_test_suite(int, char* []) {
            << (settings.includeReferenceDateEvents()
                ? "reference date events are included,\n"
                : "reference date events are excluded,\n")
-           << (settings.includeTodaysCashFlows() == boost::none ?
-               "" : (*settings.includeTodaysCashFlows() ?
-                     "today's cashflows are included,\n"
-                     : "today's cashflows are excluded,\n"))
+           << (settings.includeTodaysCashFlows()
+               ? (*settings.includeTodaysCashFlows()
+                    ? "today's cashflows are included,\n"
+                    : "today's cashflows are excluded,\n")
+               : "")
            << (settings.enforcesTodaysHistoricFixings()
                ? "today's historic fixings are enforced."
                : "today's historic fixings are not enforced.")
@@ -370,8 +374,11 @@ test_suite* init_unit_test_suite(int, char* []) {
     test->add(CapFloorTest::suite());
     test->add(CapFlooredCouponTest::suite());
     test->add(CashFlowsTest::suite());
+    test->add(ChooserOptionTest::suite());
     test->add(CliquetOptionTest::suite());
     test->add(CmsTest::suite());
+    test->add(CmsNormalTest::suite());
+    test->add(CompoundOptionTest::suite());
     test->add(ConvertibleBondTest::suite());
     test->add(CovarianceTest::suite());
     test->add(CPISwapTest::suite());
@@ -385,7 +392,10 @@ test_suite* init_unit_test_suite(int, char* []) {
     test->add(DigitalCouponTest::suite()); // might fail with QL_USE_INDEXED_COUPON
     test->add(DigitalOptionTest::suite());
     test->add(DistributionTest::suite(speed));
-    test->add(DividendOptionTest::suite());
+    test->add(DividendOptionTest::suite(speed));
+    test->add(EquityIndexTest::suite());
+    test->add(EquityCashFlowTest::suite());
+    test->add(EquityTotalReturnSwapTest::suite());
     test->add(EuropeanOptionTest::suite());
     test->add(ExchangeRateTest::suite());
     test->add(FastFourierTransformTest::suite());
@@ -403,6 +413,7 @@ test_suite* init_unit_test_suite(int, char* []) {
     test->add(GJRGARCHModelTest::suite(speed));
     test->add(GsrTest::suite());
     test->add(HestonModelTest::suite(speed));
+    test->add(HestonSLVModelTest::suite(speed));
     test->add(HybridHestonHullWhiteProcessTest::suite(speed));
     test->add(IndexTest::suite());
     test->add(InflationTest::suite());
@@ -418,6 +429,7 @@ test_suite* init_unit_test_suite(int, char* []) {
     test->add(LinearLeastSquaresRegressionTest::suite());
     test->add(LookbackOptionTest::suite(speed));
     test->add(LowDiscrepancyTest::suite());
+    test->add(MargrabeOptionTest::suite());
     test->add(MarketModelTest::suite(speed));
     test->add(MarketModelCmsTest::suite(speed));
     test->add(MarketModelSmmTest::suite(speed));
@@ -470,6 +482,7 @@ test_suite* init_unit_test_suite(int, char* []) {
     test->add(UltimateForwardTermStructureTest::suite());
     test->add(VarianceSwapTest::suite());
     test->add(VolatilityModelsTest::suite());
+    test->add(Xoshiro256StarStarTest::suite());
     test->add(ZeroCouponSwapTest::suite());
 
     // tests for experimental classes
@@ -483,11 +496,9 @@ test_suite* init_unit_test_suite(int, char* []) {
     test->add(CatBondTest::suite());
     test->add(CdoTest::suite(speed));
     test->add(CdsOptionTest::suite());
-    test->add(ChooserOptionTest::suite());
     test->add(CmsSpreadTest::suite());
     test->add(CommodityUnitOfMeasureTest::suite());
     test->add(CompiledBoostVersionTest::suite());
-    test->add(CompoundOptionTest::suite());
     test->add(CreditRiskPlusTest::suite());
     test->add(DoubleBarrierOptionTest::suite(speed));
     test->add(DoubleBinaryOptionTest::suite());
@@ -497,11 +508,9 @@ test_suite* init_unit_test_suite(int, char* []) {
     test->add(ExtensibleOptionsTest::suite());
     test->add(GaussianQuadraturesTest::experimental());
     test->add(HestonModelTest::experimental());
-    test->add(HestonSLVModelTest::experimental(speed));
     test->add(HimalayaOptionTest::suite());
     test->add(InflationCPICapFloorTest::suite());
     test->add(InflationVolTest::suite());
-    test->add(MargrabeOptionTest::suite());
     test->add(NoArbSabrTest::suite());
     test->add(NormalCLVModelTest::experimental(speed));
     test->add(NthToDefaultTest::suite(speed));

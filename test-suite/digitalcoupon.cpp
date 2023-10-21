@@ -49,9 +49,6 @@ namespace digital_coupon_test {
         Real optionTolerance;
         Real blackTolerance;
 
-        // cleanup
-        SavedSettings backup;
-
         // setup
         CommonVars() {
             fixingDays = 2;
@@ -274,9 +271,6 @@ void DigitalCouponTest::testAssetOrNothingDeepInTheMoney() {
     volatility.linkTo(ext::shared_ptr<OptionletVolatilityStructure>(new
         ConstantOptionletVolatility(vars.today, vars.calendar, Following,
                                     capletVolatility, Actual360())));
-    Real gap = 1e-4;
-    ext::shared_ptr<DigitalReplication> replication(new
-        DigitalReplication(Replication::Central, gap));
 
     for (Size k = 0; k<10; k++) {   // Loop on start and end dates
         Date startDate = vars.calendar.advance(vars.settlement,(k+1)*Years);
@@ -294,8 +288,7 @@ void DigitalCouponTest::testAssetOrNothingDeepInTheMoney() {
         Rate strike = 0.001;
         DigitalCoupon digitalCappedCoupon(underlying,
                                           strike, Position::Short, false, nullstrike,
-                                          nullstrike, Position::Short, false, nullstrike,
-                                          replication);
+                                          nullstrike, Position::Short, false, nullstrike);
         ext::shared_ptr<IborCouponPricer> pricer(new
             BlackIborCouponPricer(volatility));
         digitalCappedCoupon.setPricer(pricer);
@@ -336,8 +329,7 @@ void DigitalCouponTest::testAssetOrNothingDeepInTheMoney() {
         strike = 0.99;
         DigitalCoupon digitalFlooredCoupon(underlying,
                                            nullstrike, Position::Long, false, nullstrike,
-                                           strike, Position::Long, false, nullstrike,
-                                           replication);
+                                           strike, Position::Long, false, nullstrike);
         digitalFlooredCoupon.setPricer(pricer);
 
         // Check price vs its target price
@@ -388,9 +380,6 @@ void DigitalCouponTest::testAssetOrNothingDeepOutTheMoney() {
     volatility.linkTo(ext::shared_ptr<OptionletVolatilityStructure>(new
         ConstantOptionletVolatility(vars.today, vars.calendar, Following,
                                     capletVolatility, Actual360())));
-    Real gap = 1e-4;
-    ext::shared_ptr<DigitalReplication>
-        replication(new DigitalReplication(Replication::Central, gap));
 
     for (Size k = 0; k<10; k++) { // loop on start and end dates
         Date startDate = vars.calendar.advance(vars.settlement,(k+1)*Years);
@@ -408,8 +397,7 @@ void DigitalCouponTest::testAssetOrNothingDeepOutTheMoney() {
         Rate strike = 0.99;
         DigitalCoupon digitalCappedCoupon(underlying,
                                           strike, Position::Short, false, nullstrike,
-                                          nullstrike, Position::Long, false, nullstrike,
-                                          replication/*Replication::Central, gap*/);
+                                          nullstrike, Position::Long, false, nullstrike);
         ext::shared_ptr<IborCouponPricer> pricer(new BlackIborCouponPricer(volatility));
         digitalCappedCoupon.setPricer(pricer);
 
@@ -449,8 +437,7 @@ void DigitalCouponTest::testAssetOrNothingDeepOutTheMoney() {
         strike = 0.01;
         DigitalCoupon digitalFlooredCoupon(underlying,
                                            nullstrike, Position::Long, false, nullstrike,
-                                           strike, Position::Long, false, nullstrike,
-                                           replication);
+                                           strike, Position::Long, false, nullstrike);
         digitalFlooredCoupon.setPricer(pricer);
 
         // Check price vs its target
@@ -659,9 +646,6 @@ void DigitalCouponTest::testCashOrNothingDeepInTheMoney() {
         Date endDate = vars.calendar.advance(vars.settlement,(k+2)*Years);
         Rate nullstrike = Null<Rate>();
         Rate cashRate = 0.01;
-        Real gap = 1e-4;
-        ext::shared_ptr<DigitalReplication> replication(new
-            DigitalReplication(Replication::Central, gap));
         Date paymentDate = endDate;
 
         ext::shared_ptr<FloatingRateCoupon> underlying(new
@@ -673,8 +657,7 @@ void DigitalCouponTest::testCashOrNothingDeepInTheMoney() {
         Rate strike = 0.001;
         DigitalCoupon digitalCappedCoupon(underlying,
                                           strike, Position::Short, false, cashRate,
-                                          nullstrike, Position::Short, false, nullstrike,
-                                          replication);
+                                          nullstrike, Position::Short, false, nullstrike);
         ext::shared_ptr<IborCouponPricer> pricer(new
             BlackIborCouponPricer(volatility));
         digitalCappedCoupon.setPricer(pricer);
@@ -716,8 +699,7 @@ void DigitalCouponTest::testCashOrNothingDeepInTheMoney() {
         strike = 0.99;
         DigitalCoupon digitalFlooredCoupon(underlying,
                                            nullstrike, Position::Long, false, nullstrike,
-                                           strike, Position::Long, false, cashRate,
-                                           replication);
+                                           strike, Position::Long, false, cashRate);
         digitalFlooredCoupon.setPricer(pricer);
 
         // Check price vs its target
@@ -771,9 +753,6 @@ void DigitalCouponTest::testCashOrNothingDeepOutTheMoney() {
         Date endDate = vars.calendar.advance(vars.settlement,(k+2)*Years);
         Rate nullstrike = Null<Rate>();
         Rate cashRate = 0.01;
-        Real gap = 1e-4;
-        ext::shared_ptr<DigitalReplication> replication(new
-            DigitalReplication(Replication::Central, gap));
         Date paymentDate = endDate;
 
         ext::shared_ptr<FloatingRateCoupon> underlying(new
@@ -785,8 +764,7 @@ void DigitalCouponTest::testCashOrNothingDeepOutTheMoney() {
         Rate strike = 0.99;
         DigitalCoupon digitalCappedCoupon(underlying,
                                           strike, Position::Short, false, cashRate,
-                                          nullstrike, Position::Short, false, nullstrike,
-                                          replication);
+                                          nullstrike, Position::Short, false, nullstrike);
 
         ext::shared_ptr<IborCouponPricer> pricer(new BlackIborCouponPricer(volatility));
         digitalCappedCoupon.setPricer(pricer);
@@ -827,8 +805,7 @@ void DigitalCouponTest::testCashOrNothingDeepOutTheMoney() {
         strike = 0.01;
         DigitalCoupon digitalFlooredCoupon(underlying,
                                            nullstrike, Position::Long, false, nullstrike,
-                                           strike, Position::Long, false, cashRate,
-                                           replication);
+                                           strike, Position::Long, false, cashRate);
         digitalFlooredCoupon.setPricer(pricer);
 
         // Check price vs its target
@@ -876,10 +853,6 @@ void DigitalCouponTest::testCallPutParity() {
     Real gearing = 1.0;
     Real spread = 0.0;
 
-    Real gap = 1e-04;
-    ext::shared_ptr<DigitalReplication> replication(new
-        DigitalReplication(Replication::Central, gap));
-
     for (Real capletVolatility : vols) {
         RelinkableHandle<OptionletVolatilityStructure> volatility;
         volatility.linkTo(
@@ -903,16 +876,14 @@ void DigitalCouponTest::testCallPutParity() {
                 // Floating Rate Coupon + Call Digital option
                 DigitalCoupon cash_digitalCallCoupon(underlying,
                                           strike, Position::Long, false, cashRate,
-                                          nullstrike, Position::Long, false, nullstrike,
-                                          replication);
+                                          nullstrike, Position::Long, false, nullstrike);
                 ext::shared_ptr<IborCouponPricer> pricer(new
                     BlackIborCouponPricer(volatility));
                 cash_digitalCallCoupon.setPricer(pricer);
                 // Floating Rate Coupon - Put Digital option
                 DigitalCoupon cash_digitalPutCoupon(underlying,
                                           nullstrike, Position::Long, false, nullstrike,
-                                          strike, Position::Short, false, cashRate,
-                                          replication);
+                                          strike, Position::Short, false, cashRate);
 
                 cash_digitalPutCoupon.setPricer(pricer);
                 Real digitalPrice = cash_digitalCallCoupon.price(vars.termStructure) -
@@ -937,14 +908,12 @@ void DigitalCouponTest::testCallPutParity() {
                 // Floating Rate Coupon + Call Digital option
                 DigitalCoupon asset_digitalCallCoupon(underlying,
                                           strike, Position::Long, false, nullstrike,
-                                          nullstrike, Position::Long, false, nullstrike,
-                                          replication);
+                                          nullstrike, Position::Long, false, nullstrike);
                 asset_digitalCallCoupon.setPricer(pricer);
                 // Floating Rate Coupon - Put Digital option
                 DigitalCoupon asset_digitalPutCoupon(underlying,
                                           nullstrike, Position::Long, false, nullstrike,
-                                          strike, Position::Short, false, nullstrike,
-                                          replication);
+                                          strike, Position::Short, false, nullstrike);
                 asset_digitalPutCoupon.setPricer(pricer);
                 digitalPrice = asset_digitalCallCoupon.price(vars.termStructure) -
                                asset_digitalPutCoupon.price(vars.termStructure);
@@ -1146,15 +1115,11 @@ void DigitalCouponTest::testReplicationType() {
 test_suite* DigitalCouponTest::suite() {
     auto* suite = BOOST_TEST_SUITE("Digital coupon tests");
     suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testAssetOrNothing));
-    suite->add(QUANTLIB_TEST_CASE(
-                       &DigitalCouponTest::testAssetOrNothingDeepInTheMoney));
-    suite->add(QUANTLIB_TEST_CASE(
-                      &DigitalCouponTest::testAssetOrNothingDeepOutTheMoney));
+    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testAssetOrNothingDeepInTheMoney));
+    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testAssetOrNothingDeepOutTheMoney));
     suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testCashOrNothing));
-    suite->add(QUANTLIB_TEST_CASE(
-                        &DigitalCouponTest::testCashOrNothingDeepInTheMoney));
-    suite->add(QUANTLIB_TEST_CASE(
-                       &DigitalCouponTest::testCashOrNothingDeepOutTheMoney));
+    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testCashOrNothingDeepInTheMoney));
+    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testCashOrNothingDeepOutTheMoney));
     suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testCallPutParity));
     suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testReplicationType));
     return suite;

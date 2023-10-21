@@ -112,8 +112,6 @@ void LiborMarketModelTest::testSimpleCovarianceModels() {
 
     using namespace libor_market_model_test;
 
-    SavedSettings backup;
-
     const Size size = 10;
     const Real tolerance = 1e-14;
     Size i;
@@ -172,7 +170,7 @@ void LiborMarketModelTest::testSimpleCovarianceModels() {
 
         for (Size k=0; k<size; ++k) {
             Real expected = 0;
-            if (k>2*t) {
+            if (static_cast<Real>(k) > 2 * t) {
                 const Real T = fixingTimes[k];
                 expected=(a*(T-t)+d)*std::exp(-b*(T-t)) + c;
             }
@@ -192,8 +190,6 @@ void LiborMarketModelTest::testCapletPricing() {
     using namespace libor_market_model_test;
 
     bool usingAtParCoupons  = IborCoupon::Settings::instance().usingAtParCoupons();
-
-    SavedSettings backup;
 
     const Size size = 10;
     Real tolerance = usingAtParCoupons ? 1e-12 : 1e-5;
@@ -225,13 +221,12 @@ void LiborMarketModelTest::testCapletPricing() {
     ext::shared_ptr<AnalyticCapFloorEngine> engine1(
                             new AnalyticCapFloorEngine(model, termStructure));
 
-    ext::shared_ptr<Cap> cap1(
-        new Cap(process->cashFlows(),
-                std::vector<Rate>(size, 0.04)));
-    cap1->setPricingEngine(engine1);
+    auto cap1 = Cap(process->cashFlows(),
+                    std::vector<Rate>(size, 0.04));
+    cap1.setPricingEngine(engine1);
 
     const Real expected = 0.015853935178;
-    const Real calculated = cap1->NPV();
+    const Real calculated = cap1.NPV();
 
     if (std::fabs(expected - calculated) > tolerance)
         BOOST_ERROR("Failed to reproduce npv"
@@ -243,8 +238,6 @@ void LiborMarketModelTest::testCalibration() {
     BOOST_TEST_MESSAGE("Testing calibration of a Libor forward model...");
 
     using namespace libor_market_model_test;
-
-    SavedSettings backup;
 
     const Size size = 14;
     const Real tolerance = 8e-3;
@@ -295,10 +288,10 @@ void LiborMarketModelTest::testCalibration() {
         Handle<Quote> capVol(
             ext::shared_ptr<Quote>(new SimpleQuote(capVols[i-2])));
 
-        ext::shared_ptr<BlackCalibrationHelper> caphelper(
-            new CapHelper(maturity, capVol, index, Annual,
-                          index->dayCounter(), true, termStructure,
-                          BlackCalibrationHelper::ImpliedVolError));
+        auto caphelper =
+            ext::make_shared<CapHelper>(maturity, capVol, index, Annual,
+                                        index->dayCounter(), true, termStructure,
+                                        BlackCalibrationHelper::ImpliedVolError);
 
         caphelper->setPricingEngine(ext::shared_ptr<PricingEngine>(
                            new AnalyticCapFloorEngine(model, termStructure)));
@@ -313,12 +306,12 @@ void LiborMarketModelTest::testCalibration() {
                     ext::shared_ptr<Quote>(
                         new SimpleQuote(swaptionVols[swapVolIndex++])));
 
-                ext::shared_ptr<BlackCalibrationHelper> swaptionHelper(
-                    new SwaptionHelper(maturity, len, swaptionVol, index,
-                                       index->tenor(), dayCounter,
-                                       index->dayCounter(),
-                                       termStructure,
-                                       BlackCalibrationHelper::ImpliedVolError));
+                auto swaptionHelper =
+                    ext::make_shared<SwaptionHelper>(maturity, len, swaptionVol, index,
+                                                     index->tenor(), dayCounter,
+                                                     index->dayCounter(),
+                                                     termStructure,
+                                                     BlackCalibrationHelper::ImpliedVolError);
 
                 swaptionHelper->setPricingEngine(
                      ext::shared_ptr<PricingEngine>(
@@ -351,8 +344,6 @@ void LiborMarketModelTest::testSwaptionPricing() {
     using namespace libor_market_model_test;
 
     bool usingAtParCoupons = IborCoupon::Settings::instance().usingAtParCoupons();
-
-    SavedSettings backup;
 
     const Size size  = 10;
     const Size steps = 8*size;
@@ -448,8 +439,7 @@ void LiborMarketModelTest::testSwaptionPricing() {
                 ext::shared_ptr<Exercise> exercise(
                     new EuropeanExercise(process->fixingDates()[i]));
 
-                ext::shared_ptr<Swaption> swaption(
-                    new Swaption(forwardSwap, exercise));
+                auto swaption = ext::make_shared<Swaption>(forwardSwap, exercise);
                 swaption->setPricingEngine(engine);
 
                 GeneralStatistics stat;

@@ -89,6 +89,9 @@
     <ClCompile Include="cms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cms_normal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cmsspread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -446,6 +449,9 @@
     <ClCompile Include="vpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="xoshiro256starstar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="quantlibtestsuite.cpp" />
     <ClCompile Include="binaryoption.cpp">
       <Filter>Source Files</Filter>
@@ -502,6 +508,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="svivolatility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="equityindex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="equitytotalreturnswap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="equitycashflow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -582,6 +597,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cms.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cms_normal.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cmsspread.hpp">
@@ -950,6 +968,9 @@
     <ClInclude Include="vpp.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="xoshiro256starstar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="binaryoption.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1005,6 +1026,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="svivolatility.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="equityindex.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="equitytotalreturnswap.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="equitycashflow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

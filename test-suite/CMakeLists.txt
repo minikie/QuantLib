@@ -30,6 +30,7 @@ set(QL_TEST_SOURCES
     chooseroption.cpp
     cliquetoption.cpp
     cms.cpp
+    cms_normal.cpp
     cmsspread.cpp
     commodityunitofmeasure.cpp
     compiledboostversion.cpp
@@ -50,6 +51,9 @@ set(QL_TEST_SOURCES
     dividendoption.cpp
     doublebarrieroption.cpp
     doublebinaryoption.cpp
+    equitycashflow.cpp
+    equityindex.cpp
+    equitytotalreturnswap.cpp
     europeanoption.cpp
     everestoption.cpp
     exchangerate.cpp
@@ -162,6 +166,7 @@ set(QL_TEST_SOURCES
     varianceswaps.cpp
     volatilitymodels.cpp
     vpp.cpp
+    xoshiro256starstar.cpp
     zabr.cpp
     zerocouponswap.cpp
 )
@@ -198,6 +203,7 @@ set(QL_TEST_HEADERS
     chooseroption.hpp
     cliquetoption.hpp
     cms.hpp
+    cms_normal.hpp
     cmsspread.hpp
     commodityunitofmeasure.hpp
     compiledboostversion.hpp
@@ -218,6 +224,9 @@ set(QL_TEST_HEADERS
     dividendoption.hpp
     doublebarrieroption.hpp
     doublebinaryoption.hpp
+    equityindex.hpp
+    equitycashflow.hpp
+    equitytotalreturnswap.hpp
     europeanoption.hpp
     everestoption.hpp
     exchangerate.hpp
@@ -332,6 +341,7 @@ set(QL_TEST_HEADERS
     varianceswaps.hpp
     volatilitymodels.hpp
     vpp.hpp
+    xoshiro256starstar.hpp
     zabr.hpp
     zerocouponswap.hpp
 )
