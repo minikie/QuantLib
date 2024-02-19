@@ -149,6 +149,11 @@ namespace QuantLib {
             RateHelper::accept(v);
     }
 
+    const Handle<YieldTermStructure>& OISRateHelper::discountHandle() const {
+        QL_REQUIRE(!discountRelinkableHandle_.empty(), "discount curve is empty");
+        return discountRelinkableHandle_;
+    }
+
     DatedOISRateHelper::DatedOISRateHelper(const Date& startDate,
                                            const Date& endDate,
                                            const Handle<Quote>& fixedRate,
