@@ -18,7 +18,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#include "digitalcoupon.hpp"
+#include "toplevelfixture.hpp"
 #include "utilities.hpp"
 #include <ql/indexes/ibor/euribor.hpp>
 #include <ql/utilities/dataformatters.hpp>
@@ -36,42 +36,40 @@
 using namespace QuantLib;
 using namespace boost::unit_test_framework;
 
-namespace digital_coupon_test {
+BOOST_FIXTURE_TEST_SUITE(QuantLibTests, TopLevelFixture)
 
-    struct CommonVars {
-        // global data
-        Date today, settlement;
-        Real nominal;
-        Calendar calendar;
-        ext::shared_ptr<IborIndex> index;
-        Natural fixingDays;
-        RelinkableHandle<YieldTermStructure> termStructure;
-        Real optionTolerance;
-        Real blackTolerance;
+BOOST_AUTO_TEST_SUITE(DigitalCouponTests)
 
-        // setup
-        CommonVars() {
-            fixingDays = 2;
-            nominal = 1000000.0;
-            index = ext::shared_ptr<IborIndex>(new Euribor6M(termStructure));
-            calendar = index->fixingCalendar();
-            today = calendar.adjust(Settings::instance().evaluationDate());
-            Settings::instance().evaluationDate() = today;
-            settlement = calendar.advance(today,fixingDays,Days);
-            termStructure.linkTo(flatRate(settlement,0.05,Actual365Fixed()));
-            optionTolerance = 1.e-04;
-            blackTolerance = 1e-10;
-        }
-    };
+struct CommonVars {
+    // global data
+    Date today, settlement;
+    Real nominal;
+    Calendar calendar;
+    ext::shared_ptr<IborIndex> index;
+    Natural fixingDays;
+    RelinkableHandle<YieldTermStructure> termStructure;
+    Real optionTolerance;
+    Real blackTolerance;
 
-}
+    // setup
+    CommonVars() {
+        fixingDays = 2;
+        nominal = 1000000.0;
+        index = ext::shared_ptr<IborIndex>(new Euribor6M(termStructure));
+        calendar = index->fixingCalendar();
+        today = calendar.adjust(Settings::instance().evaluationDate());
+        Settings::instance().evaluationDate() = today;
+        settlement = calendar.advance(today,fixingDays,Days);
+        termStructure.linkTo(flatRate(settlement,0.05,Actual365Fixed()));
+        optionTolerance = 1.e-04;
+        blackTolerance = 1e-10;
+    }
+};
 
 
-void DigitalCouponTest::testAssetOrNothing() {
+BOOST_AUTO_TEST_CASE(testAssetOrNothing) {
 
     BOOST_TEST_MESSAGE("Testing European asset-or-nothing digital coupon...");
-
-    using namespace digital_coupon_test;
 
     /*  Call Payoff = (aL+b)Heaviside(aL+b-X) =  a Max[L-X'] + (b+aX')Heaviside(L-X')
         Value Call = aF N(d1') + bN(d2')
@@ -254,12 +252,10 @@ void DigitalCouponTest::testAssetOrNothing() {
     }
 }
 
-void DigitalCouponTest::testAssetOrNothingDeepInTheMoney() {
+BOOST_AUTO_TEST_CASE(testAssetOrNothingDeepInTheMoney) {
 
     BOOST_TEST_MESSAGE("Testing European deep in-the-money asset-or-nothing "
                        "digital coupon...");
-
-    using namespace digital_coupon_test;
 
     CommonVars vars;
 
@@ -363,12 +359,10 @@ void DigitalCouponTest::testAssetOrNothingDeepInTheMoney() {
     }
 }
 
-void DigitalCouponTest::testAssetOrNothingDeepOutTheMoney() {
+BOOST_AUTO_TEST_CASE(testAssetOrNothingDeepOutTheMoney) {
 
     BOOST_TEST_MESSAGE("Testing European deep out-the-money asset-or-nothing "
                        "digital coupon...");
-
-    using namespace digital_coupon_test;
 
     CommonVars vars;
 
@@ -470,7 +464,7 @@ void DigitalCouponTest::testAssetOrNothingDeepOutTheMoney() {
     }
 }
 
-void DigitalCouponTest::testCashOrNothing() {
+BOOST_AUTO_TEST_CASE(testCashOrNothing) {
 
     BOOST_TEST_MESSAGE("Testing European cash-or-nothing digital coupon...");
 
@@ -481,8 +475,6 @@ void DigitalCouponTest::testCashOrNothing() {
         where:
         d2' = ln(F/X')/stdDev - 0.5*stdDev;
     */
-
-    using namespace digital_coupon_test;
 
     CommonVars vars;
 
@@ -623,12 +615,10 @@ void DigitalCouponTest::testCashOrNothing() {
     }
 }
 
-void DigitalCouponTest::testCashOrNothingDeepInTheMoney() {
+BOOST_AUTO_TEST_CASE(testCashOrNothingDeepInTheMoney) {
 
     BOOST_TEST_MESSAGE("Testing European deep in-the-money cash-or-nothing "
                        "digital coupon...");
-
-    using namespace digital_coupon_test;
 
     CommonVars vars;
 
@@ -730,12 +720,10 @@ void DigitalCouponTest::testCashOrNothingDeepInTheMoney() {
     }
 }
 
-void DigitalCouponTest::testCashOrNothingDeepOutTheMoney() {
+BOOST_AUTO_TEST_CASE(testCashOrNothingDeepOutTheMoney) {
 
     BOOST_TEST_MESSAGE("Testing European deep out-the-money cash-or-nothing "
                        "digital coupon...");
-
-    using namespace digital_coupon_test;
 
     CommonVars vars;
 
@@ -838,12 +826,9 @@ void DigitalCouponTest::testCashOrNothingDeepOutTheMoney() {
     }
 }
 
-
-void DigitalCouponTest::testCallPutParity() {
+BOOST_AUTO_TEST_CASE(testCallPutParity) {
 
     BOOST_TEST_MESSAGE("Testing call/put parity for European digital coupon...");
-
-    using namespace digital_coupon_test;
 
     CommonVars vars;
 
@@ -934,11 +919,9 @@ void DigitalCouponTest::testCallPutParity() {
     }
 }
 
-void DigitalCouponTest::testReplicationType() {
+BOOST_AUTO_TEST_CASE(testReplicationType) {
 
     BOOST_TEST_MESSAGE("Testing replication type for European digital coupon...");
-
-    using namespace digital_coupon_test;
 
     CommonVars vars;
 
@@ -1111,16 +1094,6 @@ void DigitalCouponTest::testReplicationType() {
     }
 }
 
+BOOST_AUTO_TEST_SUITE_END()
 
-test_suite* DigitalCouponTest::suite() {
-    auto* suite = BOOST_TEST_SUITE("Digital coupon tests");
-    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testAssetOrNothing));
-    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testAssetOrNothingDeepInTheMoney));
-    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testAssetOrNothingDeepOutTheMoney));
-    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testCashOrNothing));
-    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testCashOrNothingDeepInTheMoney));
-    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testCashOrNothingDeepOutTheMoney));
-    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testCallPutParity));
-    suite->add(QUANTLIB_TEST_CASE(&DigitalCouponTest::testReplicationType));
-    return suite;
-}
+BOOST_AUTO_TEST_SUITE_END()
