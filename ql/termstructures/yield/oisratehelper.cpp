@@ -71,7 +71,8 @@ namespace QuantLib {
 
         // input discount curve Handle might be empty now but it could
         //    be assigned a curve later; use a RelinkableHandle here
-        MakeOIS tmp = MakeOIS(tenor_, overnightIndex_, 0.0, forwardStart_)
+        // MakeOIS tmp = MakeOIS(tenor_, overnightIndex_, 0.0, forwardStart_)
+        MakeOIS tmp = MakeOIS(tenor_, overnightIndex_, this->quote_->value(), forwardStart_)
             .withDiscountingTermStructure(discountRelinkableHandle_)
             .withSettlementDays(settlementDays_)
             .withTelescopicValueDates(telescopicValueDates_)
@@ -155,6 +156,11 @@ namespace QuantLib {
             v1->visit(*this);
         else
             RateHelper::accept(v);
+    }
+
+    const Handle<YieldTermStructure>& OISRateHelper::discountHandle() const {
+        QL_REQUIRE(!discountRelinkableHandle_.empty(), "discount curve is empty");
+        return discountRelinkableHandle_;
     }
 
     DatedOISRateHelper::DatedOISRateHelper(const Date& startDate,
