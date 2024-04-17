@@ -68,7 +68,8 @@ namespace QuantLib {
 
         // input discount curve Handle might be empty now but it could
         //    be assigned a curve later; use a RelinkableHandle here
-        MakeOIS tmp = MakeOIS(tenor_, overnightIndex_, 0.0, forwardStart_)
+        // MakeOIS tmp = MakeOIS(tenor_, overnightIndex_, 0.0, forwardStart_)
+        MakeOIS tmp = MakeOIS(tenor_, overnightIndex_, this->quote_->value(), forwardStart_)
             .withDiscountingTermStructure(discountRelinkableHandle_)
             .withSettlementDays(settlementDays_)
             .withTelescopicValueDates(telescopicValueDates_)
