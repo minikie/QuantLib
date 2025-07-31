@@ -33,12 +33,12 @@
 /* Define this if error messages should include current function
    information. */
 #ifndef QL_ERROR_FUNCTIONS
-//#   define QL_ERROR_FUNCTIONS
+// #   define QL_ERROR_FUNCTIONS
 #endif
 
 /* Define this if error messages should include file and line information. */
 #ifndef QL_ERROR_LINES
-//#   define QL_ERROR_LINES
+// #   define QL_ERROR_LINES
 #endif
 
 /* Define this if tracing messages should be allowed (whether they are
@@ -65,7 +65,7 @@
    per-thread.
 */
 #ifndef QL_ENABLE_SESSIONS
-//#   define QL_ENABLE_SESSIONS
+#   define QL_ENABLE_SESSIONS
 #endif
 
 /* Define this to enable the thread-safe observer pattern. You should
@@ -73,7 +73,7 @@
    the JVM or .NET eco system or any environment with an
    async garbage collector */
 #ifndef QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN
-#    define QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN
+// #    define QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN
 #endif
 
 /* Define this to enable a date resolution down to microseconds and
