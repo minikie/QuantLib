@@ -207,7 +207,7 @@ namespace QuantLib {
         Size closestIndex_Date(const Date& d) const;
         Date date_at(Size i) const { return dates_.at(i); }
 
-        const std::vector<Time>& times() const { return dt_; }
+        const std::vector<Time>& times() const { return times_; }
         const std::vector<Time>& dts() const { return dt_; }
         const std::vector<Date>& dates() const { return dates_; }
 

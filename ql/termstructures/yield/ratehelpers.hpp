@@ -330,6 +330,10 @@ namespace QuantLib {
         //@{
         void accept(AcyclicVisitor&) override;
         //@}
+
+        // mx added
+        const Handle<YieldTermStructure>& discountHandle() const;
+
       protected:
         void initializeDates() override;
         Natural settlementDays_;

@@ -907,6 +907,11 @@ namespace QuantLib {
             RateHelper::accept(v);
     }
 
+    const Handle<YieldTermStructure>& SwapRateHelper::discountHandle() const {
+        QL_REQUIRE(!discountRelinkableHandle_.empty(), "discount curve is empty");
+        return discountRelinkableHandle_;
+    }
+
     BMASwapRateHelper::BMASwapRateHelper(const Handle<Quote>& liborFraction,
                                          const Period& tenor,
                                          Natural settlementDays,
