@@ -45,7 +45,7 @@
 #    define QL_LIB_TOOLSET "vc141"
 #elif (_MSC_VER < 1930)
 #    define QL_LIB_TOOLSET "vc142"
-#elif (_MSC_VER <= 1942)
+#elif (_MSC_VER <= 1949)
 #    define QL_LIB_TOOLSET "vc143"
 #else
 #    define QL_LIB_TOOLSET "vc-unknown"
