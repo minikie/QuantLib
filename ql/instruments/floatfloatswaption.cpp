@@ -45,8 +45,7 @@ namespace QuantLib {
         return detail::simple_event(exercise_->dates().back()).hasOccurred();
     }
 
-    void
-    FloatFloatSwaption::setupArguments(PricingEngine::arguments *args) const {
+    void FloatFloatSwaption::setupArguments(PricingEngine::arguments* args) const {
 
         swap_->setupArguments(args);
 
@@ -64,12 +63,10 @@ namespace QuantLib {
         FloatFloatSwap::arguments::validate();
         QL_REQUIRE(swap, "underlying cms swap not set");
         QL_REQUIRE(exercise, "exercise not set");
-        Settlement::checkTypeAndMethodConsistency(settlementType,
-                                                  settlementMethod);
+        Settlement::checkTypeAndMethodConsistency(settlementType, settlementMethod);
     }
 
-    std::vector<ext::shared_ptr<BlackCalibrationHelper>>
-    FloatFloatSwaption::calibrationBasket(
+    std::vector<ext::shared_ptr<BlackCalibrationHelper>> FloatFloatSwaption::calibrationBasket(
         const ext::shared_ptr<SwapIndex>& standardSwapBase,
         const ext::shared_ptr<SwaptionVolatilityStructure>& swaptionVolatility,
         const BasketGeneratingEngine::CalibrationBasketType basketType) const {
@@ -80,8 +77,8 @@ namespace QuantLib {
         engine_->reset();
         setupArguments(engine_->getArguments());
         engine_->getArguments()->validate();
-        return engine->calibrationBasket(exercise_, standardSwapBase,
-                                         swaptionVolatility, basketType);
+        return engine->calibrationBasket(exercise_, standardSwapBase, swaptionVolatility,
+                                         basketType);
     }
 
 }

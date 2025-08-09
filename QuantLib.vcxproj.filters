@@ -576,9 +576,6 @@
     <ClInclude Include="ql\cashflows\simplecashflow.hpp">
       <Filter>cashflows</Filter>
     </ClInclude>
-    <ClInclude Include="ql\cashflows\subperiodcoupon.hpp">
-      <Filter>cashflows</Filter>
-    </ClInclude>
     <ClInclude Include="ql\cashflows\timebasket.hpp">
       <Filter>cashflows</Filter>
     </ClInclude>
@@ -4401,9 +4398,6 @@
     <ClInclude Include="ql\methods\finitedifferences\utilities\fdmescrowedloginnervaluecalculator.hpp">
       <Filter>methods\finitedifferences\utilities</Filter>
     </ClInclude>
-    <ClInclude Include="ql\instruments\zerocouponswap.hpp">
-      <Filter>instruments</Filter>
-    </ClInclude>
     <ClInclude Include="ql\pricingengines\bond\riskybondengine.hpp">
       <Filter>pricingengines\bond</Filter>
     </ClInclude>
@@ -4478,6 +4472,15 @@
     </ClInclude>
     <ClInclude Include="ql\indexes\ibor\swestr.hpp">
       <Filter>indexes\ibor</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\cashflows\multipleresetscoupon.hpp">
+      <Filter>cashflows</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\cashflows\overnightindexedcouponpricer.hpp">
+      <Filter>cashflows</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\instruments\zerocouponswap.hpp">
+      <Filter>instruments</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -4578,9 +4581,6 @@
       <Filter>cashflows</Filter>
     </ClCompile>
     <ClCompile Include="ql\cashflows\simplecashflow.cpp">
-      <Filter>cashflows</Filter>
-    </ClCompile>
-    <ClCompile Include="ql\cashflows\subperiodcoupon.cpp">
       <Filter>cashflows</Filter>
     </ClCompile>
     <ClCompile Include="ql\cashflows\timebasket.cpp">
@@ -6611,9 +6611,6 @@
     <ClCompile Include="ql\experimental\averageois\arithmeticaverageois.cpp">
       <Filter>experimental\averageois</Filter>
     </ClCompile>
-    <ClCompile Include="ql\experimental\averageois\averageoiscouponpricer.cpp">
-      <Filter>experimental\averageois</Filter>
-    </ClCompile>
     <ClCompile Include="ql\experimental\averageois\arithmeticoisratehelper.cpp">
       <Filter>experimental\averageois</Filter>
     </ClCompile>
@@ -7165,9 +7162,6 @@
     <ClCompile Include="ql\methods\finitedifferences\utilities\fdmescrowedloginnervaluecalculator.cpp">
       <Filter>methods\finitedifferences\utilities</Filter>
     </ClCompile>
-    <ClCompile Include="ql\instruments\zerocouponswap.cpp">
-      <Filter>instruments</Filter>
-    </ClCompile>
     <ClCompile Include="ql\pricingengines\bond\riskybondengine.cpp">
       <Filter>pricingengines\bond</Filter>
     </ClCompile>
@@ -7227,6 +7221,15 @@
     </ClCompile>
     <ClCompile Include="ql\time\daycounters\yearfractiontodate.cpp">
       <Filter>time\daycounters</Filter>
+    </ClCompile>
+    <ClCompile Include="ql\cashflows\multipleresetscoupon.cpp">
+      <Filter>cashflows</Filter>
+    </ClCompile>
+    <ClCompile Include="ql\cashflows\overnightindexedcouponpricer.cpp">
+      <Filter>cashflows</Filter>
+    </ClCompile>
+    <ClCompile Include="ql\instruments\zerocouponswap.cpp">
+      <Filter>instruments</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

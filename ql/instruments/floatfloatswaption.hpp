@@ -24,18 +24,18 @@
 #ifndef quantlib_instruments_floatfloatswaption_hpp
 #define quantlib_instruments_floatfloatswaption_hpp
 
-#include <ql/instruments/swaption.hpp>
 #include <ql/instruments/floatfloatswap.hpp>
-#include <ql/pricingengines/swaption/basketgeneratingengine.hpp>
-#include <ql/termstructures/yieldtermstructure.hpp>
-#include <ql/termstructures/volatility/swaption/swaptionvolstructure.hpp>
+#include <ql/instruments/swaption.hpp>
 #include <ql/models/calibrationhelper.hpp>
+#include <ql/pricingengines/swaption/basketgeneratingengine.hpp>
+#include <ql/termstructures/volatility/swaption/swaptionvolstructure.hpp>
+#include <ql/termstructures/yieldtermstructure.hpp>
 
 namespace QuantLib {
 
     //! floatfloat swaption class
     /*! \ingroup instruments
-    */
+     */
 
     class FloatFloatSwaption : public Option {
       public:
@@ -53,13 +53,9 @@ namespace QuantLib {
         //! \name Inspectors
         //@{
         Settlement::Type settlementType() const { return settlementType_; }
-        Settlement::Method settlementMethod() const {
-            return settlementMethod_;
-        }
+        Settlement::Method settlementMethod() const { return settlementMethod_; }
         Swap::Type type() const { return swap_->type(); }
-        const ext::shared_ptr<FloatFloatSwap> &underlyingSwap() const {
-            return swap_;
-        }
+        const ext::shared_ptr<FloatFloatSwap>& underlying() const { return swap_; }
         //@}
         std::vector<ext::shared_ptr<BlackCalibrationHelper>>
         calibrationBasket(const ext::shared_ptr<SwapIndex>& standardSwapBase,
@@ -87,8 +83,7 @@ namespace QuantLib {
 
     //! base class for cms swaption engines
     class FloatFloatSwaption::engine
-        : public GenericEngine<FloatFloatSwaption::arguments,
-                               FloatFloatSwaption::results> {};
+    : public GenericEngine<FloatFloatSwaption::arguments, FloatFloatSwaption::results> {};
 }
 
 #endif
