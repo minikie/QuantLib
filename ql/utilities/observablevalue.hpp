@@ -84,14 +84,14 @@ namespace QuantLib {
     template <class T>
     ObservableValue<T>& ObservableValue<T>::operator=(T&& t) {
         value_ = std::move(t);
-        observable_->notifyObservers();
+        //observable_->notifyObservers();
         return *this;
     }
 
     template <class T>
     ObservableValue<T>& ObservableValue<T>::operator=(const T& t) {
         value_ = t;
-        observable_->notifyObservers();
+        //observable_->notifyObservers();
         return *this;
     }
 
@@ -99,7 +99,7 @@ namespace QuantLib {
     ObservableValue<T>&
     ObservableValue<T>::operator=(const ObservableValue<T>& t) { // NOLINT(bugprone-unhandled-self-assignment)
         value_ = t.value_;
-        observable_->notifyObservers();
+        //observable_->notifyObservers();
         return *this;
     }
 
