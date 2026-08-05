@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug (static runtime)|Win32">
@@ -789,6 +789,7 @@
     <ClInclude Include="ql\cashflows\inflationcouponpricer.hpp" />
     <ClInclude Include="ql\cashflows\lineartsrpricer.hpp" />
     <ClInclude Include="ql\cashflows\multipleresetscoupon.hpp" />
+    <ClInclude Include="ql\cashflows\blackovernightindexedcouponpricer.hpp" />
     <ClInclude Include="ql\cashflows\overnightindexedcoupon.hpp" />
     <ClInclude Include="ql\cashflows\overnightindexedcouponpricer.hpp" />
     <ClInclude Include="ql\cashflows\rangeaccrual.hpp" />
@@ -2197,6 +2198,7 @@
     <ClCompile Include="ql\cashflows\inflationcouponpricer.cpp" />
     <ClCompile Include="ql\cashflows\lineartsrpricer.cpp" />
     <ClCompile Include="ql\cashflows\multipleresetscoupon.cpp" />
+    <ClCompile Include="ql\cashflows\blackovernightindexedcouponpricer.cpp" />
     <ClCompile Include="ql\cashflows\overnightindexedcoupon.cpp" />
     <ClCompile Include="ql\cashflows\overnightindexedcouponpricer.cpp" />
     <ClCompile Include="ql\cashflows\rangeaccrual.cpp" />

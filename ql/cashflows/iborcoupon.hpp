@@ -87,7 +87,7 @@ namespace QuantLib {
         Time spanningTime() const;
         //@}
 
-      private:
+      protected:
         friend class IborCouponPricer;
         ext::shared_ptr<IborIndex> iborIndex_;
         Date fixingDate_;

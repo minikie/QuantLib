@@ -13,7 +13,7 @@
  under the terms of the QuantLib license.  You should have received a
  copy of the license along with this program; if not, please email
  <quantlib-dev@lists.sf.net>. The license is also available online at
- <http://quantlib.org/license.shtml>.
+ <https://www.quantlib.org/license.shtml>.
 
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
@@ -35,7 +35,6 @@ namespace QuantLib {
                      const Period& forwardStart)
     : swapTenor_(swapTenor), overnightIndex_(overnightIndex), fixedRate_(fixedRate),
       forwardStart_(forwardStart),
-      settlementDays_(Null<Natural>()),
       fixedCalendar_(overnightIndex->fixingCalendar()),
       overnightCalendar_(overnightIndex->fixingCalendar()),
       fixedDayCount_(overnightIndex->dayCounter()) {}
@@ -46,6 +45,10 @@ namespace QuantLib {
     }
 
     MakeOIS::operator ext::shared_ptr<OvernightIndexedSwap>() const {
+
+        QL_REQUIRE(effectiveDate_ == Date() || settlementDays_ == Null<Natural>(),
+                   "cannot set both an explicit effective date and settlement days; "
+                   "use one or the other");
 
         Date startDate;
         if (effectiveDate_ != Date())
@@ -78,24 +81,22 @@ namespace QuantLib {
                 startDate = overnightCalendar_.adjust(startDate, Following);
         }
 
-        // OIS end of month default
-        bool fixedEndOfMonth, overnightEndOfMonth;
+        bool fixedEndOfMonth, overnightEndOfMonth, maturityEndOfMonth;
         if (isDefaultEOM_)
-            fixedEndOfMonth = overnightEndOfMonth = overnightCalendar_.isEndOfMonth(startDate);
+            fixedEndOfMonth = overnightEndOfMonth = maturityEndOfMonth =
+                overnightCalendar_.isEndOfMonth(startDate);
         else {
             fixedEndOfMonth = fixedEndOfMonth_;
             overnightEndOfMonth = overnightEndOfMonth_;
+            maturityEndOfMonth = maturityEndOfMonth_ ? *maturityEndOfMonth_ : overnightEndOfMonth_;
         }
 
         Date endDate = terminationDate_;
         if (endDate == Date()) {
-            if (overnightEndOfMonth)
-                endDate = overnightCalendar_.advance(startDate,
-                                                     swapTenor_,
-                                                     ModifiedFollowing,
-                                                     overnightEndOfMonth);
-            else
-                endDate = startDate + swapTenor_;
+            endDate = startDate + swapTenor_;
+            if (maturityEndOfMonth && allowsEndOfMonth(swapTenor_) &&
+                overnightCalendar_.isEndOfMonth(startDate))
+                endDate = overnightCalendar_.endOfMonth(endDate);
         }
 
         Frequency fixedPaymentFrequency, overnightPaymentFrequency;
@@ -198,7 +199,6 @@ namespace QuantLib {
 
     MakeOIS& MakeOIS::withSettlementDays(Natural settlementDays) {
         settlementDays_ = settlementDays;
-        effectiveDate_ = Date();
         return *this;
     }
 
@@ -331,6 +331,12 @@ namespace QuantLib {
 
     MakeOIS& MakeOIS::withOvernightLegEndOfMonth(bool flag) {
         overnightEndOfMonth_ = flag;
+        isDefaultEOM_ = false;
+        return *this;
+    }
+
+    MakeOIS& MakeOIS::withMaturityEndOfMonth(bool flag) {
+        maturityEndOfMonth_ = flag;
         isDefaultEOM_ = false;
         return *this;
     }

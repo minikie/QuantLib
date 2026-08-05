@@ -25,7 +25,9 @@
 #include <ql/cashflows/inflationcoupon.hpp>
 #include <ql/cashflows/inflationcouponpricer.hpp>
 #include <ql/cashflows/lineartsrpricer.hpp>
+#include <ql/cashflows/blackovernightindexedcouponpricer.hpp>
 #include <ql/cashflows/overnightindexedcoupon.hpp>
+#include <ql/cashflows/overnightindexedcouponpricer.hpp>
 #include <ql/cashflows/rangeaccrual.hpp>
 #include <ql/cashflows/rateaveraging.hpp>
 #include <ql/cashflows/replication.hpp>

@@ -46,11 +46,6 @@ namespace QuantLib {
             return result;
         }
 
-        bool allowsEndOfMonth(const Period& tenor) {
-            return (tenor.units() == Months || tenor.units() == Years)
-                && tenor >= 1*Months;
-        }
-
     }
 
 
@@ -652,6 +647,10 @@ namespace QuantLib {
             }
         }
         return result;
+    }
+
+    bool allowsEndOfMonth(const Period& tenor) {
+        return (tenor.units() == Months || tenor.units() == Years) && tenor >= 1 * Months;
     }
 
 }

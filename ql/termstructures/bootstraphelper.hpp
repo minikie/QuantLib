@@ -123,17 +123,26 @@ namespace QuantLib {
 
     //! Bootstrap helper with date schedule relative to global evaluation date
     /*! Derived classes must takes care of rebuilding the date schedule when
-        the global evaluation date changes
+        the global evaluation date changes.
+
+        \warning Using this helper together with a bootstrapped curve constructed
+                 with a fixed reference date causes the curve to re-bootstrap on
+                 every evaluation date change, even though the result is identical.
+                 To avoid the unnecessary work, either freeze the curve after the
+                 initial bootstrap, or use fixed-effective-date helpers with
+                 \p updateDates set to false.
     */
     template <class TS>
     class RelativeDateBootstrapHelper : public BootstrapHelper<TS> {
       public:
-        explicit RelativeDateBootstrapHelper(const Handle<Quote>& quote);
-        explicit RelativeDateBootstrapHelper(Real quote);
+        explicit RelativeDateBootstrapHelper(const Handle<Quote>& quote,
+                                             bool updateDates = true);
+        explicit RelativeDateBootstrapHelper(Real quote,
+                                             bool updateDates = true);
         //! \name Observer interface
         //@{
         void update() override {
-            if (evaluationDate_ != Settings::instance().evaluationDate()) {
+            if (updateDates_ && evaluationDate_ != Settings::instance().evaluationDate()) {
                 evaluationDate_ = Settings::instance().evaluationDate();
                 initializeDates();
             }
@@ -143,6 +152,7 @@ namespace QuantLib {
       protected:
         virtual void initializeDates() = 0;
         Date evaluationDate_;
+        bool updateDates_;
     };
 
     // template definitions
@@ -213,17 +223,23 @@ namespace QuantLib {
 
     template <class TS>
     RelativeDateBootstrapHelper<TS>::RelativeDateBootstrapHelper(
-                                                    const Handle<Quote>& quote)
-    : BootstrapHelper<TS>(quote) {
-        this->registerWith(Settings::instance().evaluationDate());
-        evaluationDate_ = Settings::instance().evaluationDate();
+                                                    const Handle<Quote>& quote,
+                                                    bool updateDates)
+    : BootstrapHelper<TS>(quote), updateDates_(updateDates) {
+        if (updateDates_) {
+            this->registerWith(Settings::instance().evaluationDate());
+            evaluationDate_ = Settings::instance().evaluationDate();
+        }
     }
 
     template <class TS>
-    RelativeDateBootstrapHelper<TS>::RelativeDateBootstrapHelper(Real quote)
-    : BootstrapHelper<TS>(quote) {
-        this->registerWith(Settings::instance().evaluationDate());
-        evaluationDate_ = Settings::instance().evaluationDate();
+    RelativeDateBootstrapHelper<TS>::RelativeDateBootstrapHelper(Real quote,
+                                                                 bool updateDates)
+    : BootstrapHelper<TS>(quote), updateDates_(updateDates) {
+        if (updateDates_) {
+            this->registerWith(Settings::instance().evaluationDate());
+            evaluationDate_ = Settings::instance().evaluationDate();
+        }
     }
 
     inline std::ostream& operator<<(std::ostream& out,

@@ -13,7 +13,7 @@
  under the terms of the QuantLib license.  You should have received a
  copy of the license along with this program; if not, please email
  <quantlib-dev@lists.sf.net>. The license is also available online at
- <http://quantlib.org/license.shtml>.
+ <https://www.quantlib.org/license.shtml>.
 
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
@@ -145,7 +145,10 @@ namespace QuantLib {
     : FixedVsFloatingSwap(type, std::move(fixedNominals), std::move(fixedSchedule), fixedRate, std::move(fixedDC),
                           overnightNominals, std::move(overnightSchedule), overnightIndex,
                           spread, DayCounter(), ext::nullopt, paymentLag, paymentCalendar),
-                          overnightIndex_(overnightIndex), averagingMethod_(averagingMethod),
+                          overnightIndex_(overnightIndex),
+                          paymentLag_(paymentLag), paymentCalendar_(paymentCalendar),
+                          telescopicValueDates_(telescopicValueDates),
+                          averagingMethod_(averagingMethod),
                           lookbackDays_(lookbackDays), lockoutDays_(lockoutDays),
                           applyObservationShift_(applyObservationShift) {
         legs_[1] =
